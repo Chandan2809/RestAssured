@@ -3,10 +3,15 @@ package restassuredtest;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 
+import org.testng.Assert;
+
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
+
 import Files.payload;
+import Files.reUseableMethod;
 
 public class BasicsRestAssured {
 
@@ -60,10 +65,13 @@ public class BasicsRestAssured {
 		then().assertThat().log().all().statusCode(200).extract().response().asString();
 		
 		
-		JsonPath js1 = new JsonPath(getPlaceResponse);
+		JsonPath js1 = reUseableMethod.rawToJson(getPlaceResponse);
 		String actualAdrees = js1.getString("address");
 		System.out.println(actualAdrees);
 		
+		Assert.assertEquals(actualAdrees, newAddress);
+		
+		
+		
+	  }
 	}
-
-}
