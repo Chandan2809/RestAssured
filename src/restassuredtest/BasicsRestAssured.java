@@ -37,9 +37,11 @@ public class BasicsRestAssured {
 		
 		//update place
 		
+		String newAddress = "Summer walk, Africa";
+		
 		given().log().all().queryParam("key", "quick123").header("Content-Type", "application/json").body("{\r\n"
 				+ "\"place_id\":\""+placedId+"\",\r\n"
-				+ "\"address\":\"70 winter walk, USA\",\r\n"
+				+ "\"address\":\""+newAddress+"\",\r\n"
 				+ "\"key\":\"qaclick123\"\r\n"
 				+ "}").
 		
@@ -47,8 +49,20 @@ public class BasicsRestAssured {
 		
 		then().assertThat().log().all().statusCode(200).body("msg", equalTo("Address successfully updated"));
 		
+		
+		
 		 //get place
 		
+		
+		
+		String getPlaceResponse = given().log().all().queryParam("key", "qaclick123").queryParam("place id", placedId).when().get("/maps/api/place/get/json").
+		
+		then().assertThat().log().all().statusCode(200).extract().response().asString();
+		
+		
+		JsonPath js1 = new JsonPath(getPlaceResponse);
+		String actualAdrees = js1.getString("address");
+		System.out.println(actualAdrees);
 		
 	}
 
